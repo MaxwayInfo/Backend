@@ -168,9 +168,22 @@ exports.UserloginData = async (req, res, next) => {
           { $set: { userotp: userotp } },
           { new: true }
         );
-        return res.status(201).json({
+      
+        const expirationDate = new Date();
+        expirationDate.setMonth(expirationDate.getMonth() + 1);
+        const expiresIn = Math.floor(
+          (Date.now() + 30 * 24 * 60 * 60 * 1000) / 1000
+        );
+        const phone = Jwt.sign(
+          {
+            userphone: updatedData.userphone
+          },
+          process.env.SECRETFORAUTH,
+          { expiresIn: expiresIn }
+        );
+        res.status(200).json({
           message: "phone number already exists",
-          userphone: updatedData.userphone
+          userphone: phone
         });
       } else {
         // if usereffral exists

@@ -740,7 +740,7 @@ router.post("/uploadimg", UploadImgMulter1, imgaesupload);
 router.get("/getSliderimg", getSliderImages);
 router.post("/SliderimgDelete", deleteSliderImage);
 router.post("/updateSlider", UploadImgMulter1, updateSlider);
-router.post("sendOTP", sendOTP);
+router.post("/send-otp", sendOTP);
 
 router.post("/NoticeSlider", UploadImgMulter2, imgaesuploadNotice);
 // editname of user post api
