@@ -466,42 +466,42 @@ exports.TotalNumberOfPendingWith = async (req, res) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
-exports.TotalNumberOfPendingRecharge = async (req, res) => {
-  try {
-    // Count users with status 0
-    const usersCountStatus0 = await userloginDatas.aggregate([
-      { $unwind: "$PaymentHistoryData" }, // Unwind the PaymentHistoryData array
-      { $match: { "PaymentHistoryData.status": 0 } }, // Match documents where status is 0
-      { $count: "totalUsersStatus0" } // Count the number of users with status 0
-    ]);
+// exports.TotalNumberOfPendingRecharge = async (req, res) => {
+//   try {
+//     // Count users with status 0
+//     const usersCountStatus0 = await userloginDatas.aggregate([
+//       { $unwind: "$PaymentHistoryData" }, // Unwind the PaymentHistoryData array
+//       { $match: { "PaymentHistoryData.status": 0 } }, // Match documents where status is 0
+//       { $count: "totalUsersStatus0" } // Count the number of users with status 0
+//     ]);
 
-    // Count users with status 1
-    const usersCountStatus1 = await userloginDatas.aggregate([
-      { $unwind: "$PaymentHistoryData" }, // Unwind the PaymentHistoryData array
-      { $match: { "PaymentHistoryData.status": 1 } }, // Match documents where status is 1
-      { $count: "totalUsersStatus1" } // Count the number of users with status 1
-    ]);
+//     // Count users with status 1
+//     const usersCountStatus1 = await userloginDatas.aggregate([
+//       { $unwind: "$PaymentHistoryData" }, // Unwind the PaymentHistoryData array
+//       { $match: { "PaymentHistoryData.status": 1 } }, // Match documents where status is 1
+//       { $count: "totalUsersStatus1" } // Count the number of users with status 1
+//     ]);
 
     // If either count is not available, return a 404 error
-    if (
-      !usersCountStatus0 ||
-      !usersCountStatus1 ||
-      usersCountStatus0.length === 0 ||
-      usersCountStatus1.length === 0
-    ) {
-      return res.status(404).json({ error: "User data not found" });
-    }
+//     if (
+//       !usersCountStatus0 ||
+//       !usersCountStatus1 ||
+//       usersCountStatus0.length === 0 ||
+//       usersCountStatus1.length === 0
+//     ) {
+//       return res.status(404).json({ error: "User data not found" });
+//     }
 
-    // Extract the total count for each status
-    const totalUsersStatus0 = usersCountStatus0[0].totalUsersStatus0;
-    const totalUsersStatus1 = usersCountStatus1[0].totalUsersStatus1;
+//     // Extract the total count for each status
+//     const totalUsersStatus0 = usersCountStatus0[0].totalUsersStatus0;
+//     const totalUsersStatus1 = usersCountStatus1[0].totalUsersStatus1;
 
-    return res.json({ totalUsersStatus0, totalUsersStatus1 });
-  } catch (error) {
-    // Handle errors
-    return res.status(500).json({ error: "Internal Server Error" });
-  }
-};
+//     return res.json({ totalUsersStatus0, totalUsersStatus1 });
+//   } catch (error) {
+//     // Handle errors
+//     return res.status(500).json({ error: "Internal Server Error" });
+//   }
+// };
 
 //fetch data of user details personal details
 exports.UserPersonalFetchData = async (req, res, next) => {

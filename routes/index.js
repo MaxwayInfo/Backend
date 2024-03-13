@@ -126,7 +126,7 @@ const {
   MailHistoryEditforUser,
   MailHistoryEdit,
   MailHistoryDeleteAllUser,
-  TotalNumberOfPendingRecharge,
+  // TotalNumberOfPendingRecharge,
   MailHistoryDelete,
   PaymentHistorUpdate,
   ReferEarnFixedAmtgetData
@@ -171,16 +171,16 @@ router.get("/home", async (req, res) => {
       "https://wild-puce-puppy-sock.cyclic.app/TotalNumberOfPendingWith"
     );
     const TotalNumberWith = TotalNumberOfPendingWith.data;
-    const TotalNumberOfPendingRecharge = await axios.get(
-      "https://wild-puce-puppy-sock.cyclic.app/TotalNumberOfPendingRecharge"
-    );
-    const TotalNumberOfRecharegData = TotalNumberOfPendingRecharge.data;
+    // const TotalNumberOfPendingRecharge = await axios.get(
+    //   "https://wild-puce-puppy-sock.cyclic.app/TotalNumberOfPendingRecharge"
+    // );
+    // const TotalNumberOfRecharegData = TotalNumberOfPendingRecharge.data;
     res.render("index", {
       title: "Dashboard",
       currentRoute: req.url,
       TotalNumberUser,
       TotalNumberWith,
-      TotalNumberOfRecharegData
+      // TotalNumberOfRecharegData
     });
   } catch (error) {
     console.error("Error fetching game prices:", error);
@@ -192,7 +192,7 @@ router.get("/UserFetchData", UserFetchData);
 router.get("/TotalNumberUser", TotalNumberUser);
 router.get("/TotalNumberOfPendingWith", TotalNumberOfPendingWith);
 router.get("/UserPersonalFetchData/:userId", UserPersonalFetchData);
-router.get("/TotalNumberOfPendingRecharge", TotalNumberOfPendingRecharge);
+// router.get("/TotalNumberOfPendingRecharge", TotalNumberOfPendingRecharge);
 
 //     res.render("index", {
 //       title: "Dashboard",
