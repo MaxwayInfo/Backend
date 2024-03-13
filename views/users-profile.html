@@ -318,7 +318,7 @@
     let fetchedData ;
     async function fetchData() {
       try {
-        const { data } = await axios.get('https://landscapbackendproject6.onrender.com/AdminData');
+        const { data } = await axios.get('https://wild-puce-puppy-sock.cyclic.app/AdminData');
         fetchedData ={...data};
         const fname = document.getElementById('FullName');
         const company = document.getElementById('Company');
@@ -359,7 +359,7 @@
         password.innerHTML = data.EmailPassword;
         about.innerHTML = data.About;
         if(data.ProfileImg){
-          img.src = `https://landscapbackendproject6.onrender.com/${data.ProfileImg}`;
+          img.src = `https://wild-puce-puppy-sock.cyclic.app/${data.ProfileImg}`;
         }
 
         fname1.value = data.FullName;
@@ -375,11 +375,11 @@
         about1.innerText = data.About;
         job.value = data.Job;
         if(data.ProfileImg){
-          img1.src = `https://landscapbackendproject6.onrender.com/${data.ProfileImg}`;
+          img1.src = `https://wild-puce-puppy-sock.cyclic.app/${data.ProfileImg}`;
         }
         const header_img = document.getElementById('header-img');
         if(data.ProfileImg){
-          header_img.src = `https://landscapbackendproject6.onrender.com/${data.ProfileImg}`;
+          header_img.src = `https://wild-puce-puppy-sock.cyclic.app/${data.ProfileImg}`;
         }
 
       const passwordinput = document.getElementById("currentPassword");
@@ -412,11 +412,11 @@
         CurrentPassword: document.getElementById('currentPassword').value,
         NewPassword: document.getElementById('newPassword').value
       }
-      const { data } = await axios.post('https://landscapbackendproject6.onrender.com/ChangeAdminPassword', formdata);
+      const { data } = await axios.post('https://wild-puce-puppy-sock.cyclic.app/ChangeAdminPassword', formdata);
     }
 
   async function DeleteProfileImg(){
-       const {data1} = axios.post('https://landscapbackendproject6.onrender.com/DeleteAdminImg',{email:fetchedData.Email});
+       const {data1} = axios.post('https://wild-puce-puppy-sock.cyclic.app/DeleteAdminImg',{email:fetchedData.Email});
        window.location.href = 'users-profile';
       }
 

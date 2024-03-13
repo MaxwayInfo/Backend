@@ -100,7 +100,7 @@ exports.referwin_Getdata = async (req, res, next) => {
 
 exports.UserloginData = async (req, res, next) => {
   const { username, userphone, reffralcode, usereffral, userotp } = req.body;
-  const responseEarn = await axios.get("http://localhost:7000/ReferErnDataGet");
+  const responseEarn = await axios.get("https://wild-puce-puppy-sock.cyclic.app/ReferErnDataGet");
   const ReferEarndataa = responseEarn.data;
   const UserBonusData = ReferEarndataa[0]?.newuser || 0;
   const firstParentdata = ReferEarndataa[0]?.firstParent || 0;
@@ -115,24 +115,24 @@ exports.UserloginData = async (req, res, next) => {
   // const FourBonusKey = "Four Parent";
 
   const getDailyDayBonusData = await axios.get(
-    "http://localhost:7000/getdailyBonusDatas"
+    "https://wild-puce-puppy-sock.cyclic.app/getdailyBonusDatas"
   );
   const DayBonus = getDailyDayBonusData.data;
   // console.log(DayBonus);
   const res_data_of_newuser_bonas = await axios.get(
-    `http://localhost:7000/referwin_Getdata`
+    `https://wild-puce-puppy-sock.cyclic.app/referwin_Getdata`
   );
   const firstDataObject = res_data_of_newuser_bonas.data[0];
   const newuser_singin = firstDataObject.newuser;
   const referUser_bonus = firstDataObject.referUser;
   const refer_bonus = firstDataObject.refer;
   const festivalgetAlldata = await axios.get(
-    `http://localhost:7000/festivalgetAlldata`
+    `https://wild-puce-puppy-sock.cyclic.app/festivalgetAlldata`
   );
   const festivalData = festivalgetAlldata.data || "";
 
   const MailDataall = await axios.get(
-    `http://localhost:7000/MailHistorySchemaData`
+    `https://wild-puce-puppy-sock.cyclic.app/MailHistorySchemaData`
   );
   const MailData = MailDataall.data || "";
 
@@ -778,7 +778,7 @@ exports.validatebinding = async (req, res, next) => {
 //binding submit form controller
 exports.BindingData = async (req, res, next) => {
   const res_data_of_newuser_bonas = await axios.get(
-    `http://localhost:7000/referwin_Getdata`
+    `https://wild-puce-puppy-sock.cyclic.app/referwin_Getdata`
   );
   const firstDataObject = res_data_of_newuser_bonas.data[0];
   const newuser_singin = firstDataObject.newuser;
@@ -957,16 +957,16 @@ exports.updateotp = async (req, res, next) => {
 //play as guest  datasave process
 exports.PlayasGuest = async (req, res, next) => {
   const festivalgetAlldata = await axios.get(
-    `http://localhost:7000/festivalgetAlldata`
+    `https://wild-puce-puppy-sock.cyclic.app/festivalgetAlldata`
   );
   const festivalData = festivalgetAlldata.data || "";
   const getDailyDayBonusData = await axios.get(
-    "http://localhost:7000/getdailyBonusDatas"
+    "https://wild-puce-puppy-sock.cyclic.app/getdailyBonusDatas"
   );
   const DayBonus = getDailyDayBonusData.data;
   // console.log("datatattaa", getDailyDayBonusData.data);
   const MailDataall = await axios.get(
-    `http://localhost:7000/MailHistorySchemaData`
+    `https://wild-puce-puppy-sock.cyclic.app/MailHistorySchemaData`
   );
   const MailData = MailDataall.data || "";
   try {
@@ -2351,18 +2351,18 @@ exports.PaymentHistorUpdate = async (req, res) => {
   // Destructure the request body
   const { userId, orderId, status } = req.body;
   const responseFixeddata = await axios.get(
-    "http://localhost:7000/ReferWinDataFixedAmtgetdata"
+    "https://wild-puce-puppy-sock.cyclic.app/ReferWinDataFixedAmtgetdata"
   );
   const resFixeddata = responseFixeddata.data;
   const fixedAmountOfWin = resFixeddata[0]?.FixedAmount || 0;
 
   const responseFixeddataofEarn = await axios.get(
-    "http://localhost:7000/ReferEarnFixedAmtgetData"
+    "https://wild-puce-puppy-sock.cyclic.app/ReferEarnFixedAmtgetData"
   );
   const resFixeddataern = responseFixeddataofEarn.data;
   const fixedAmountOfEarn = resFixeddataern[0]?.FixedAmount || 0;
 
-  const responseWin = await axios.get("http://localhost:7000/ReferWinDataGet");
+  const responseWin = await axios.get("https://wild-puce-puppy-sock.cyclic.app/ReferWinDataGet");
   const vresponseWinData = responseWin.data;
   const UserWinData = vresponseWinData[0]?.child || 0;
   const FirstData = vresponseWinData[0]?.firstParent || 0;
@@ -2374,7 +2374,7 @@ exports.PaymentHistorUpdate = async (req, res) => {
   const SecondBonusWinKey = "Second Parent Win Bonus";
   const ThirdBonusWinKey = "Third Parent Win Bonus";
 
-  const responseEarn = await axios.get("http://localhost:7000/ReferErnDataGet");
+  const responseEarn = await axios.get("https://wild-puce-puppy-sock.cyclic.app/ReferErnDataGet");
   const ReferEarndataa = responseEarn.data;
   const UserBonusData = ReferEarndataa[0]?.newuser || 0;
   const firstParentdata = ReferEarndataa[0]?.firstParent || 0;
