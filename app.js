@@ -28,6 +28,8 @@ const corsOptions = {
   credentials: true // Allow credentials like cookies to be sent with the requests
 };
 
+app.use(cors('http://localhost:3000'));
+
 // app.use(cors('https://wild-puce-puppy-sock.cyclic.app'));
 // app.use(cors({ origin: "port.ocean369.com));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
