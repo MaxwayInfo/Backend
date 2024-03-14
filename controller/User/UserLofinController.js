@@ -1391,17 +1391,23 @@ exports.SpinnerBonus = async (req, res, next) => {
     if (walletdata) {
       user.wallet = walletdata;
     }
+    const parsedSpinnerBonus = parseFloat(spinnerBonus);
 
+    if (isNaN(parsedSpinnerBonus)) {
+      return res
+        .status(400)
+        .json({ message: "Spinner bonus is not a valid number" });
+    }
     // Add bonus to user
     user.bonus.push({
       date: new Date(),
       status: spinnerType,
-      price: spinnerBonus
+      price: parsedSpinnerBonus
     });
 
     // Update TotalBonus
     let totalBonus = user.TotalBonus || 0; // Get the current TotalBonus or default to 0
-    totalBonus += spinnerBonus; // Increase totalBonus with the new spinnerBonus
+    totalBonus += parsedSpinnerBonus; // Increase totalBonus with the new spinnerBonus
     if (isNaN(totalBonus)) {
       // Handle case where totalBonus is not a number
       return res
@@ -1420,7 +1426,6 @@ exports.SpinnerBonus = async (req, res, next) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
-
 exports.GameHistoryData = async (req, res) => {
   try {
     const {
