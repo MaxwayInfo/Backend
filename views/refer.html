@@ -301,7 +301,7 @@
     const formData = {
       child, firstParent, SecondParent ,ThirdParent 
     };
-    fetch('https://wild-puce-puppy-sock.cyclic.app/ReferErnData', {
+    fetch('http://localhost:7000/ReferErnData', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -332,7 +332,7 @@ const submitForm2 = async(event)=> {
     const formData = {
       FixedAmount,
     };
-    fetch('https://wild-puce-puppy-sock.cyclic.app/ReferEarnFixedAmt', {
+    fetch('http://localhost:7000/ReferEarnFixedAmt', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -362,7 +362,7 @@ document.addEventListener('DOMContentLoaded', function () {
           Id
         };
         // Send a POST request to delete the slider image
-        fetch(`https://wild-puce-puppy-sock.cyclic.app/DeletereReferEarn`, {
+        fetch(`http://localhost:7000/DeletereReferEarn`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -411,7 +411,7 @@ document.addEventListener('DOMContentLoaded', function () {
           Id
         };
         // Send a POST request to delete the slider image
-        fetch(`https://wild-puce-puppy-sock.cyclic.app/DeletereReferEarnfixedData`, {
+        fetch(`http://localhost:7000/DeletereReferEarnfixedData`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

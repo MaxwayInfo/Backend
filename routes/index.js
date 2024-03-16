@@ -165,21 +165,21 @@ const router = express.Router();
 
 router.get("/home", async (req, res) => {
   try {
-    const resp = await axios.get("https://wild-puce-puppy-sock.cyclic.app/TotalNumberUser");
+    const resp = await axios.get("http://localhost:7000/TotalNumberUser");
     const TotalNumberUser = resp.data;
     const TotalNumberOfPendingWith = await axios.get(
-      "https://wild-puce-puppy-sock.cyclic.app/TotalNumberOfPendingWith"
+      "http://localhost:7000/TotalNumberOfPendingWith"
     );
     const TotalNumberWith = TotalNumberOfPendingWith.data;
     // const TotalNumberOfPendingRecharge = await axios.get(
-    //   "https://wild-puce-puppy-sock.cyclic.app/TotalNumberOfPendingRecharge"
+    //   "http://localhost:7000/TotalNumberOfPendingRecharge"
     // );
-    // const TotalNumberOfRecharegData = TotalNumberOfPendingRecharge.data;
+    // const TotalNumberOfRecharegData = TotalNumberOfPendingRecharge.data || 0;
     res.render("index", {
       title: "Dashboard",
       currentRoute: req.url,
       TotalNumberUser,
-      TotalNumberWith,
+      TotalNumberWith
       // TotalNumberOfRecharegData
     });
   } catch (error) {
@@ -220,7 +220,7 @@ router.get("/player", async (req, res) => {
   // res.render("player", { title: "Player Master", currentRoute: req.url });
   try {
     // Make a GET request to the GamePriceGet API
-    const resp = await axios.get("https://wild-puce-puppy-sock.cyclic.app/UserFetchData");
+    const resp = await axios.get("http://localhost:7000/UserFetchData");
     const userdata = resp.data;
     res.render("player", {
       title: "Entryfees",
@@ -240,24 +240,24 @@ router.get("/user", async (req, res) => {
   const userId = req.query.id;
   try {
     const paymentHistoryGetdataSingle = await axios.get(
-      `https://wild-puce-puppy-sock.cyclic.app/paymentHistoryGetdataSingle/${userId}`
+      `http://localhost:7000/paymentHistoryGetdataSingle/${userId}`
     );
     const paymentHistorydata = paymentHistoryGetdataSingle.data;
     console.log(paymentHistorydata);
     // Fetch user data
     const userDataResponse = await axios.get(
-      `https://wild-puce-puppy-sock.cyclic.app/UserPersonalFetchData/${userId}`
+      `http://localhost:7000/UserPersonalFetchData/${userId}`
     );
     const userdata1 = userDataResponse.data;
 
     // Fetch game history data
     const gameHistoryResponse = await axios.get(
-      `https://wild-puce-puppy-sock.cyclic.app/GameHistoryDataGet/${userId}`
+      `http://localhost:7000/GameHistoryDataGet/${userId}`
     );
     const gameHistoryData = gameHistoryResponse.data;
 
     const withdrawget = await axios.get(
-      `https://wild-puce-puppy-sock.cyclic.app/withdrawget/${userId}`
+      `http://localhost:7000/withdrawget/${userId}`
     );
     const withdrawdata = withdrawget.data;
     res.render("user", {
@@ -299,7 +299,7 @@ router.get("/pages-contact", (req, res) => {
 router.get("/Bonus", async (req, res) => {
   try {
     // Make a GET request to the GamePriceGet API
-    const response = await axios.get("https://wild-puce-puppy-sock.cyclic.app/referwin_Getdata");
+    const response = await axios.get("http://localhost:7000/referwin_Getdata");
     const referdata = response.data;
     // console.log(gamePrices);
     res.render("Bonus", {
@@ -318,12 +318,12 @@ router.get("/Bonus", async (req, res) => {
 router.get("/Refer", async (req, res) => {
   try {
     const ReferEarnFixedAmtResponse = await axios.get(
-      "https://wild-puce-puppy-sock.cyclic.app/ReferEarnFixedAmtgetData"
+      "http://localhost:7000/ReferEarnFixedAmtgetData"
     );
     const ReferEarnFixedAmt = ReferEarnFixedAmtResponse.data;
 
     const ReferEarndataResponse = await axios.get(
-      "https://wild-puce-puppy-sock.cyclic.app/ReferErnDataGet"
+      "http://localhost:7000/ReferErnDataGet"
     );
     const ReferEarndata = ReferEarndataResponse.data;
 
@@ -348,7 +348,7 @@ router.get("/Win_lose", (req, res) => {
 router.get("/slider", async (req, res) => {
   try {
     // Make a GET request to the GamePriceGet API
-    const response = await axios.get("https://wild-puce-puppy-sock.cyclic.app/NoticeSliderget");
+    const response = await axios.get("http://localhost:7000/NoticeSliderget");
     const ImgNotice = response.data;
     // console.log(gamePrices);
     res.render("slider", {
@@ -372,11 +372,11 @@ router.get("/tic_app", (req, res) => {
 });
 router.get("/ReferWin", async (req, res) => {
   const response = await axios.get(
-    "https://wild-puce-puppy-sock.cyclic.app/ReferWinDataFixedAmtgetdata"
+    "http://localhost:7000/ReferWinDataFixedAmtgetdata"
   );
   const referwinfixeddata = response.data;
   // console.log(referwinfixeddata);
-  const resp = await axios.get("https://wild-puce-puppy-sock.cyclic.app/ReferWinDataGet");
+  const resp = await axios.get("http://localhost:7000/ReferWinDataGet");
   const referwin = resp.data;
   try {
     res.render("ReferWin", {
@@ -397,7 +397,7 @@ router.post("/DeletereReferWin", DeletereReferWin);
 // });
 
 router.get("/rech_rej", async (req, res) => {
-  const resp = await axios.get("https://wild-puce-puppy-sock.cyclic.app/UserFetchData");
+  const resp = await axios.get("http://localhost:7000/UserFetchData");
   const userdata = resp.data;
   try {
     res.render("rech_rej", {
@@ -413,7 +413,7 @@ router.get("/rech_rej", async (req, res) => {
 });
 
 router.get("/rech_pe", async (req, res) => {
-  const resp = await axios.get("https://wild-puce-puppy-sock.cyclic.app/UserFetchData");
+  const resp = await axios.get("http://localhost:7000/UserFetchData");
   const userdata = resp.data;
   try {
     res.render("rech_pe", {
@@ -429,7 +429,7 @@ router.get("/rech_pe", async (req, res) => {
 });
 
 router.get("/rech_app", async (req, res) => {
-  const resp = await axios.get("https://wild-puce-puppy-sock.cyclic.app/UserFetchData");
+  const resp = await axios.get("http://localhost:7000/UserFetchData");
   const userdata = resp.data;
   console.log(userdata);
   try {
@@ -453,7 +453,7 @@ router.get("/Carrom", async (req, res) => {
   try {
     // Make a GET request to the GamePriceGet API
     const response = await axios.get(
-      "https://wild-puce-puppy-sock.cyclic.app/GamePriceGetwithoutid"
+      "http://localhost:7000/GamePriceGetwithoutid"
     );
     const carromPrices = response.data;
     // console.log(gamePrices);
@@ -471,7 +471,7 @@ router.get("/Carrom", async (req, res) => {
 router.get("/Slide", async (req, res) => {
   try {
     // Make a GET request to the GamePriceGet API
-    const response = await axios.get("https://wild-puce-puppy-sock.cyclic.app/getSliderimg");
+    const response = await axios.get("http://localhost:7000/getSliderimg");
     const ImgSlider = response.data;
     // console.log(ImgSlider);
     res.render("Slide", {
@@ -488,7 +488,7 @@ router.get("/Slide", async (req, res) => {
 router.get("/with_re", async (req, res) => {
   try {
     // Make a GET request to the GamePriceGet API
-    const response = await axios.get("https://wild-puce-puppy-sock.cyclic.app/withdrawgetAll");
+    const response = await axios.get("http://localhost:7000/withdrawgetAll");
     const withdrawrequest = response.data;
     // console.log(gamePrices);
     res.render("with_re", {
@@ -504,7 +504,7 @@ router.get("/with_re", async (req, res) => {
 router.get("/with_app", async (req, res) => {
   try {
     // Make a GET request to the GamePriceGet API
-    const response = await axios.get("https://wild-puce-puppy-sock.cyclic.app/withdrawgetAll");
+    const response = await axios.get("http://localhost:7000/withdrawgetAll");
     const withdrawapprove = response.data;
     res.render("with_app", {
       title: "Approval",
@@ -520,7 +520,7 @@ router.get("/mail", async (req, res) => {
   try {
     // Make a GET request to the GamePriceGet API
     const response = await axios.get(
-      "https://wild-puce-puppy-sock.cyclic.app/festivalgetAlldata"
+      "http://localhost:7000/festivalgetAlldata"
     );
     const festivaldata = response.data;
     // console.log(gamePrices);
@@ -537,10 +537,10 @@ router.get("/mail", async (req, res) => {
 router.get("/mailBonus", async (req, res) => {
   try {
     // Make a GET request to the GamePriceGet API
-    const resp = await axios.get("https://wild-puce-puppy-sock.cyclic.app/MailHistorySchemaData");
+    const resp = await axios.get("http://localhost:7000/MailHistorySchemaData");
     const Mailldatacollection = resp.data;
     const UserFetchData = await axios.get(
-      "https://wild-puce-puppy-sock.cyclic.app/UserFetchData"
+      "http://localhost:7000/UserFetchData"
     );
     const UserFetchDataforMail = UserFetchData.data;
     res.render("mailPageBonus", {
@@ -560,7 +560,7 @@ router.get("/SingleMalForUser/:id", async (req, res) => {
     const { id } = req.params;
 
     const fetchSingleUserMailData = await axios.get(
-      `https://wild-puce-puppy-sock.cyclic.app/fetchSingleUserMailData/${id}`
+      `http://localhost:7000/fetchSingleUserMailData/${id}`
     );
     const fetchSingleUserMailDatadetails = fetchSingleUserMailData.data;
     res.render("mailPageBonusSingleUser", {
@@ -576,7 +576,7 @@ router.get("/SingleMalForUser/:id", async (req, res) => {
 
 router.get("/with_rej", async (req, res) => {
   try {
-    const response = await axios.get("https://wild-puce-puppy-sock.cyclic.app/withdrawgetAll");
+    const response = await axios.get("http://localhost:7000/withdrawgetAll");
     const withdrawapprove = response.data;
     res.render("with_rej", {
       title: "Approval",
@@ -592,7 +592,7 @@ router.get("/with_rej", async (req, res) => {
 router.get("/festival", async (req, res) => {
   try {
     const response = await axios.get(
-      "https://wild-puce-puppy-sock.cyclic.app/getdailyBonusDatas"
+      "http://localhost:7000/getdailyBonusDatas"
     );
     const dailybonsdatas = response.data;
     // console.log(dailybonsdatas);
@@ -622,6 +622,7 @@ router.get("/referwin_Getdata", referwin_Getdata);
 router.post("/BankDetails", BankDetails);
 router.get("/BankDetailsgets/:UniqeId", BankDetailsgets);
 //UpiDetails get and post api
+router.post("/validate-binding", validatebinding);
 router.post("/UpiDetails", upiDetails);
 router.get("/UpiDetailsgets/:UniqeId", UpiDetailsgets);
 //withdraw details post api
@@ -748,6 +749,5 @@ router.post("/editname", EditName);
 router.get("/NoticeSliderget", getNoticeImages);
 router.post("/NoticeDelteImg", deletEeNoticeImage);
 router.post("/NoticeUpdateImg", UploadImgMulter2, updateNotice);
-router.post('/validate-binding',validatebinding)
 
 module.exports = router;

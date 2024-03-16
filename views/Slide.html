@@ -199,7 +199,7 @@
       
         console.log(formData)
         // Fetch API to send the FormData object
-        fetch(`https://wild-puce-puppy-sock.cyclic.app/updateSlider`, {
+        fetch(`http://localhost:7000/updateSlider`, {
             method: 'POST',
             body: formData ,
         })
@@ -236,7 +236,7 @@
             formData.append("SliderName", Name);
             formData.append("SliderImg", slideImg);
             // Fetch API to send the FormData object
-            fetch(`https://wild-puce-puppy-sock.cyclic.app/uploadimg`, {
+            fetch(`http://localhost:7000/uploadimg`, {
                 method: 'POST',
                 body: formData
             })
@@ -267,7 +267,7 @@
             sliderImageId
         };
         // Send a POST request to delete the slider image
-        fetch(`https://wild-puce-puppy-sock.cyclic.app/SliderimgDelete`, {
+        fetch(`http://localhost:7000/SliderimgDelete`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

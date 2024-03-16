@@ -190,7 +190,7 @@
     const formData = {
       refer, referUser, newuser
     };
-    fetch('https://wild-puce-puppy-sock.cyclic.app/referwinadmin', {
+    fetch('http://localhost:7000/referwinadmin', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -222,7 +222,7 @@ document.addEventListener('DOMContentLoaded', function () {
           Id
         };
         // Send a POST request to delete the slider image
-        fetch(`https://wild-puce-puppy-sock.cyclic.app/DeletereferBounsAmount`, {
+        fetch(`http://localhost:7000/DeletereferBounsAmount`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

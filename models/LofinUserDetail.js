@@ -12,15 +12,16 @@ const Gamehistoryschema = new mongoose.Schema({
   status: { type: String, default: 0 }
 });
 const PaymentHistorySchema = new mongoose.Schema({
-  orderId: { type: String, required: true },
-  cust_Email: { type: String, required: true },
-  cust_Mobile: { type: String, required: true },
-  gateway_type: { type: String, required: true },
-  merchantKey: { type: String, required: true },
-  secret: { type: String, required: true },
-  token: { type: String, required: true },
-  txnAmount: { type: Number, required: true },
-  upiuid: { type: String, required: true },
+  orderId: { type: String },
+  cust_Email: { type: String },
+  cust_Mobile: { type: String },
+  gateway_type: { type: String },
+  merchantKey: { type: String },
+  secret: { type: String },
+  percentageVal: { type: Number },
+  token: { type: String },
+  txnAmount: { type: Number },
+  upiuid: { type: String },
   Date: { type: Date, default: new Date() },
   status: { type: Number, default: 0 }
 });
@@ -106,6 +107,7 @@ const loginDetails = new mongoose.Schema({
     ]
   },
   bonus: [Bonus],
+  WinWallet: { type: Number, default: 0 },
   MailForAllUser: [MailForAllUser],
   SingleMailText: [Singlemailtext],
   verification: { type: String },

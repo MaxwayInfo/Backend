@@ -171,7 +171,7 @@
         Id
       };
       
-    fetch('https://wild-puce-puppy-sock.cyclic.app/SingleUserMailEdit', {
+    fetch('http://localhost:7000/SingleUserMailEdit', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', function async() {
           Id,UserId
         };
         console.log(formData)
-        fetch(`https://wild-puce-puppy-sock.cyclic.app/deleteSIngleMailUser`, {
+        fetch(`http://localhost:7000/deleteSIngleMailUser`, {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json'

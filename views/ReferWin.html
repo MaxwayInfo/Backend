@@ -321,7 +321,7 @@
     const formData = {
       child, firstParent, SecondParent ,ThirdParent 
     };
-    fetch('https://wild-puce-puppy-sock.cyclic.app/ReferWinDataController', {
+    fetch('http://localhost:7000/ReferWinDataController', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -351,7 +351,7 @@ const submitForm2 = async(event)=> {
     const formData = {
       FixedAmount
     };
-    fetch('https://wild-puce-puppy-sock.cyclic.app/ReferWinDataFixedAmt', {
+    fetch('http://localhost:7000/ReferWinDataFixedAmt', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -382,7 +382,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
         // console.log(formData)
         // Send a POST request to delete the slider image
-        fetch(`https://wild-puce-puppy-sock.cyclic.app/DeletereReferWin`, {
+        fetch(`http://localhost:7000/DeletereReferWin`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -432,7 +432,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
         // console.log(formData)
         // Send a POST request to delete the slider image
-        fetch(`https://wild-puce-puppy-sock.cyclic.app/DeletereReferWinsecond`, {
+        fetch(`http://localhost:7000/DeletereReferWinsecond`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -191,7 +191,7 @@ document.getElementById('imageFormupdate').addEventListener('submit', function (
     formData.append("NoticeImageIds", sliderImageIds); // Append the sliderImageIds here
   // console.log(formData)
     // Fetch API to send the FormData object
-    fetch(`https://wild-puce-puppy-sock.cyclic.app/NoticeUpdateImg`, {
+    fetch(`http://localhost:7000/NoticeUpdateImg`, {
         method: 'POST',
         body: formData
     })
@@ -224,7 +224,7 @@ document.getElementById('imageFormupdate').addEventListener('submit', function (
             formData.append("NoticeName", Name);
             formData.append("NoticeImg", NoticeImg);
             // Fetch API to send the FormData object
-            fetch(`https://wild-puce-puppy-sock.cyclic.app/NoticeSlider`, {
+            fetch(`http://localhost:7000/NoticeSlider`, {
                 method: 'POST',
                 body: formData
             })
@@ -248,7 +248,7 @@ location.reload()
           NticeinnerId,
             sliderImageIds
         };
-        fetch(`https://wild-puce-puppy-sock.cyclic.app/NoticeDelteImg`, {
+        fetch(`http://localhost:7000/NoticeDelteImg`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -12,11 +12,9 @@ const userloginDatas = require("../../models/LofinUserDetail");
 const {
   Types: { ObjectId }
 } = require("mongoose");
-
 const GamePriceData = require("../../models/GamePriceData");
 const withdraPostData = require("../../models/withdraPostData");
 const Admin_User = require("../../models/UserData");
-
 const mongoose = require("mongoose");
 const multer = require("multer");
 const fs = require("fs");
@@ -100,39 +98,40 @@ exports.referwin_Getdata = async (req, res, next) => {
 
 exports.UserloginData = async (req, res, next) => {
   const { username, userphone, reffralcode, usereffral, userotp } = req.body;
-  const responseEarn = await axios.get("https://wild-puce-puppy-sock.cyclic.app/ReferErnDataGet");
+  console.log(req.body);
+  console.log(username, userphone, reffralcode, usereffral, userotp);
+  const responseEarn = await axios.get("http://localhost:7000/ReferErnDataGet");
   const ReferEarndataa = responseEarn.data;
   const UserBonusData = ReferEarndataa[0]?.newuser || 0;
   const firstParentdata = ReferEarndataa[0]?.firstParent || 0;
   const SecondParentdata = ReferEarndataa[0]?.SecondParent || 0;
   const ThirdParentdata = ReferEarndataa[0]?.ThirdParent || 0;
-  const minimumBalance = ReferEarndataa[0]?.minimumBalance || 0;
+  const FourParentdata = ReferEarndataa[0]?.FourParent || 0;
 
   const UserBonusDataKey = "Child Bonus";
   const FirstParentKey = "First Parent";
   const SecondBonusKey = "Second Parent";
   const ThirdBonusKey = "Third Parent";
-  // const FourBonusKey = "Four Parent";
-
+  const FourBonusKey = "Four Parent";
   const getDailyDayBonusData = await axios.get(
-    "https://wild-puce-puppy-sock.cyclic.app/getdailyBonusDatas"
+    "http://localhost:7000/getdailyBonusDatas"
   );
   const DayBonus = getDailyDayBonusData.data;
   // console.log(DayBonus);
   const res_data_of_newuser_bonas = await axios.get(
-    `https://wild-puce-puppy-sock.cyclic.app/referwin_Getdata`
+    `http://localhost:7000/referwin_Getdata`
   );
   const firstDataObject = res_data_of_newuser_bonas.data[0];
   const newuser_singin = firstDataObject.newuser;
   const referUser_bonus = firstDataObject.referUser;
   const refer_bonus = firstDataObject.refer;
   const festivalgetAlldata = await axios.get(
-    `https://wild-puce-puppy-sock.cyclic.app/festivalgetAlldata`
+    ` http://localhost:7000/festivalgetAlldata`
   );
   const festivalData = festivalgetAlldata.data || "";
 
   const MailDataall = await axios.get(
-    `https://wild-puce-puppy-sock.cyclic.app/MailHistorySchemaData`
+    `http://localhost:7000/MailHistorySchemaData`
   );
   const MailData = MailDataall.data || "";
 
@@ -159,16 +158,12 @@ exports.UserloginData = async (req, res, next) => {
         userphone: userphone
       });
       if (existingUser) {
-        console.log("true");
-        if (!isValidId) {
-          return res.status(400).json({ error: "Invalid _id value" });
-        }
         const updatedData = await userloginDatas.findOneAndUpdate(
           { userphone: userphone },
           { $set: { userotp: userotp } },
           { new: true }
         );
-      
+
         const expirationDate = new Date();
         expirationDate.setMonth(expirationDate.getMonth() + 1);
         const expiresIn = Math.floor(
@@ -218,71 +213,73 @@ exports.UserloginData = async (req, res, next) => {
                     item.firstParentId === 0 &&
                     item.SecondParentId === 0 &&
                     item.ThirdParentId === 0 &&
-                    item.minimumBalance === 0
+                    item.FourParentId === 0
                 )
               ) {
                 ReferEarnCollectionofMy = [
                   { firstParentId: 0 },
                   { SecondParentId: 0 },
                   { ThirdParentId: 0 },
-                  { minimumBalance: 0 }
+                  { FourParentId: 0 }
                 ];
               }
               const { _id: ParentUserID, ReferEarnCollection } = existingUser;
               const newReferEarnCollection = [ParentUserID.toString()]; // Assign value at index 0
-
-              for (let i = 1; i < ReferEarnCollection.length && i < 3; i++) {
+              for (let i = 1; i < ReferEarnCollection.length && i < 4; i++) {
                 const valueFromParentCollection = ReferEarnCollectionofMy[
                   i - 1
                 ] || { firstParentId: 0 };
                 newReferEarnCollection[i] = valueFromParentCollection; // Assign value at current index
               }
-              // for (const userId of newReferEarnCollection) {
-              //   // Find the user by ID
-              //   let userToUpdate;
-              //   if (userId != 0) {
-              //     userToUpdate = await userloginDatas.findById(userId);
-              //   }
-              //   let bonusData;
+              // console.log(newReferEarnCollection,'hello')
+              for (const userId of newReferEarnCollection) {
+                // Find the user by ID
+                let userToUpdate;
+                if (userId != 0) {
+                  userToUpdate = await userloginDatas.findById(userId);
+                }
 
-              //   // Check if the user exists
-              //   if (userToUpdate) {
-              //     switch (newReferEarnCollection.indexOf(userId)) {
-              //       case 0:
-              //         bonusData = {
-              //           date: Date.now(),
-              //           status: FirstParentKey,
-              //           price: firstParentdata
-              //         };
-              //         break;
-              //       case 1:
-              //         bonusData = {
-              //           date: Date.now(),
-              //           status: SecondBonusKey,
-              //           price: SecondParentdata
-              //         };
-              //         break;
-              //       case 2:
-              //         bonusData = {
-              //           date: Date.now(),
-              //           status: ThirdBonusKey,
-              //           price: ThirdParentdata
-              //         };
-              //         break;
-              //       case 3:
-              //         bonusData = {
-              //           date: Date.now(),
-              //           status: FourBonusKey,
-              //           price: FourParentdata
-              //         };
-              //         break;
-              //       // Add more cases as needed for other indexes
-              //     }
+                let bonusData;
 
-              //     userToUpdate.bonus.push(bonusData);
-              //     await userToUpdate.save();
-              //   }
-              // }
+                // Check if the user exists
+                if (userToUpdate) {
+                  switch (newReferEarnCollection.indexOf(userId)) {
+                    case 0:
+                      bonusData = {
+                        date: Date.now(),
+                        status: FirstParentKey,
+                        price: firstParentdata
+                      };
+                      break;
+                    case 1:
+                      bonusData = {
+                        date: Date.now(),
+                        status: SecondBonusKey,
+                        price: SecondParentdata
+                      };
+                      break;
+                    case 2:
+                      bonusData = {
+                        date: Date.now(),
+                        status: ThirdBonusKey,
+                        price: ThirdParentdata
+                      };
+                      break;
+                    case 3:
+                      bonusData = {
+                        date: Date.now(),
+                        status: FourBonusKey,
+                        price: FourParentdata
+                      };
+                      break;
+                    // Add more cases as needed for other indexes
+                  }
+                  userToUpdate.bonus.push(bonusData);
+                  await userToUpdate.save();
+                  userToUpdate.TotalBonus += bonusData.price;
+                  await userToUpdate.save();
+                }
+              }
 
               const newUser = new userloginDatas({
                 username,
@@ -314,6 +311,11 @@ exports.UserloginData = async (req, res, next) => {
                     date: Date.now(),
                     status: referbonus,
                     price: refer_bonus
+                  },
+                  {
+                    date: Date.now(),
+                    status: UserBonusDataKey,
+                    price: UserBonusData
                   }
                 ],
                 DailyBonus: DayBonus.map((dailyData) => ({
@@ -337,6 +339,8 @@ exports.UserloginData = async (req, res, next) => {
                 (Date.now() + 30 * 24 * 60 * 60 * 1000) / 1000
               );
 
+              // console.log('hello0')
+
               const phone = Jwt.sign(
                 {
                   userphone: savedNewUser.userphone
@@ -344,6 +348,8 @@ exports.UserloginData = async (req, res, next) => {
                 process.env.SECRETFORAUTH,
                 { expiresIn: expiresIn }
               );
+
+              console.log(phone, "hello");
 
               res.status(200).json({
                 message: "data save successfully",
@@ -482,32 +488,47 @@ exports.TotalNumberOfPendingWith = async (req, res) => {
 // exports.TotalNumberOfPendingRecharge = async (req, res) => {
 //   try {
 //     // Count users with status 0
+//     // Aggregate to count users with status 0
 //     const usersCountStatus0 = await userloginDatas.aggregate([
 //       { $unwind: "$PaymentHistoryData" }, // Unwind the PaymentHistoryData array
 //       { $match: { "PaymentHistoryData.status": 0 } }, // Match documents where status is 0
 //       { $count: "totalUsersStatus0" } // Count the number of users with status 0
 //     ]);
 
-//     // Count users with status 1
+//     // Aggregate to count users with status 1
 //     const usersCountStatus1 = await userloginDatas.aggregate([
 //       { $unwind: "$PaymentHistoryData" }, // Unwind the PaymentHistoryData array
 //       { $match: { "PaymentHistoryData.status": 1 } }, // Match documents where status is 1
 //       { $count: "totalUsersStatus1" } // Count the number of users with status 1
 //     ]);
 
-    // If either count is not available, return a 404 error
-//     if (
-//       !usersCountStatus0 ||
-//       !usersCountStatus1 ||
-//       usersCountStatus0.length === 0 ||
-//       usersCountStatus1.length === 0
-//     ) {
-//       return res.status(404).json({ error: "User data not found" });
+//     // Initialize variables to hold the counts, defaulting to 0 if data is not found
+//     let totalUsersStatus0 = 0;
+//     let totalUsersStatus1 = 0;
+
+//     // Check if usersCountStatus0 is not found or has length 0
+//     if (!usersCountStatus0 || usersCountStatus0.length === 0) {
+//       // Set totalUsersStatus0 to 0
+//       totalUsersStatus0 = 0;
+//     } else {
+//       // Extract the count from usersCountStatus0
+//       totalUsersStatus0 = usersCountStatus0[0].totalUsersStatus0;
 //     }
 
+//     // Check if usersCountStatus1 is not found or has length 0
+//     if (!usersCountStatus1 || usersCountStatus1.length === 0) {
+//       // Set totalUsersStatus1 to 0
+//       totalUsersStatus1 = 0;
+//     } else {
+//       // Extract the count from usersCountStatus1
+//       totalUsersStatus1 = usersCountStatus1[0].totalUsersStatus1;
+//     }
+
+//     // Now you can use totalUsersStatus0 and totalUsersStatus1 as needed
+
 //     // Extract the total count for each status
-//     const totalUsersStatus0 = usersCountStatus0[0].totalUsersStatus0;
-//     const totalUsersStatus1 = usersCountStatus1[0].totalUsersStatus1;
+//     totalUsersStatus0 = usersCountStatus0[0].totalUsersStatus0;
+//     totalUsersStatus1 = usersCountStatus1[0].totalUsersStatus1;
 
 //     return res.json({ totalUsersStatus0, totalUsersStatus1 });
 //   } catch (error) {
@@ -684,10 +705,9 @@ exports.withdraw = async (req, res, next) => {
     } = req.body;
     const existingUser = await userloginDatas.findOne({ _id: uniqeId });
     const walletVal =
-      existingUser && existingUser.wallet ? existingUser.wallet : 0;
+      existingUser && existingUser.WinWallet ? existingUser.WinWallet : 0;
     const updatedWallet = walletVal - Amount;
-    existingUser.wallet = updatedWallet;
-
+    existingUser.WinWallet = updatedWallet;
     if (existingUser) {
       existingUser.withdraw.push({
         Amount,
@@ -791,7 +811,7 @@ exports.validatebinding = async (req, res, next) => {
 //binding submit form controller
 exports.BindingData = async (req, res, next) => {
   const res_data_of_newuser_bonas = await axios.get(
-    `https://wild-puce-puppy-sock.cyclic.app/referwin_Getdata`
+    `http://localhost:7000/referwin_Getdata`
   );
   const firstDataObject = res_data_of_newuser_bonas.data[0];
   const newuser_singin = firstDataObject.newuser;
@@ -970,16 +990,16 @@ exports.updateotp = async (req, res, next) => {
 //play as guest  datasave process
 exports.PlayasGuest = async (req, res, next) => {
   const festivalgetAlldata = await axios.get(
-    `https://wild-puce-puppy-sock.cyclic.app/festivalgetAlldata`
+    `http://localhost:7000/festivalgetAlldata`
   );
   const festivalData = festivalgetAlldata.data || "";
   const getDailyDayBonusData = await axios.get(
-    "https://wild-puce-puppy-sock.cyclic.app/getdailyBonusDatas"
+    "http://localhost:7000/getdailyBonusDatas"
   );
   const DayBonus = getDailyDayBonusData.data;
   // console.log("datatattaa", getDailyDayBonusData.data);
   const MailDataall = await axios.get(
-    `https://wild-puce-puppy-sock.cyclic.app/MailHistorySchemaData`
+    `http://localhost:7000/MailHistorySchemaData`
   );
   const MailData = MailDataall.data || "";
   try {
@@ -1333,21 +1353,24 @@ exports.updateNotice = async (req, res, next) => {
 //payment controller start
 
 exports.Payment = async (req, res, next) => {
-  const { amount, email } = req.body;
+  const { amount, phone, userId, percentageVal } = req.body;
+  console.log(amount, phone, userId, percentageVal,'payment Data')
   const amnt = JSON.stringify(amount);
+  const orderId = uuidv4();
 
+  // const hashedSecret = await bcrypt.hash(secret, 10);
   const paytmParams = {
     upiuid: "paytmqr6jekaptpvl@paytm",
     token: "a92cab-731b3f-d97358-308145-7fe14a",
-    OrderId: "4823423480",
-    txnAmount: "100",
+    OrderId: orderId,
+    txnAmount: amount,
+    percentageVal: percentageVal,
     txnNote: "Test",
     callback_url: "https://getway.maxwayinfotech.shop/trial/txnResult.php",
     gateway_type: "Advanced",
-    cust_Mobile: "7221072220",
-    cust_Email: "kdjrgu@kjrkj@gmail.com",
-    secret: "5P13LdGSFL",
-    merchantKey: "EPLudu14203694874891" // Retrieve merchant key from environment variable
+    cust_Mobile: phone,
+    secret: "hashedSecret",
+    merchantKey: "EPLudu14203694874891" // Retrieve merchant key from environment variable,
   };
   /**
    * Generate checksum by parameters we have
@@ -1359,9 +1382,21 @@ exports.Payment = async (req, res, next) => {
     res.status(500).json({ error: "Merchant key is not defined." });
   } else {
     PaytmChecksum.generateSignature(paytmParams, merchantKey)
-      .then(function (checksum) {
+      .then(async function (checksum) {
         paytmParams.CHECKSUMHASH = checksum; // Add checksum to the parameters
-        res.json(paytmParams); // Send the parameters with checksum back as JSON response
+        console.log('hello shubham')
+        try {
+          // Save the paytmParams directly in the paymentHistorySchema
+          const data = await userloginDatas.findById(userId);
+          // Push the payment parameters to the payment history schema
+          data.PaymentHistoryData.push(paytmParams);
+          // Save the updated user data
+          await data.save();
+          res.json(paytmParams); // Send the saved document as JSON response
+        } catch (error) {
+          console.error("Error saving paytmParams:", error);
+          res.status(500).json({ error: "Error saving payment details" });
+        }
       })
       .catch(function (error) {
         console.log(error); // Log any error that occurred during checksum generation
@@ -1380,34 +1415,27 @@ exports.callbackpayemnt = (req, res) => {
 exports.SpinnerBonus = async (req, res, next) => {
   try {
     // Extract data from the request body
-    const { uniqeId, spinnerBonus, walletdata } = req.body;
-    const spinnerType = "Spinner Bonus";
+    const { uniqeId, spinnerBonus, walletdata, spinnerType } = req.body;
+    // const spinnerType = "Spinner Bonus";
     const user = await userloginDatas.findOne({ _id: uniqeId });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
     // Update wallet data
-    if (walletdata) {
-      user.wallet = walletdata;
-    }
-    const parsedSpinnerBonus = parseFloat(spinnerBonus);
+    user.wallet = walletdata;
 
-    if (isNaN(parsedSpinnerBonus)) {
-      return res
-        .status(400)
-        .json({ message: "Spinner bonus is not a valid number" });
-    }
     // Add bonus to user
     user.bonus.push({
       date: new Date(),
       status: spinnerType,
-      price: parsedSpinnerBonus
+      price: spinnerBonus
     });
 
     // Update TotalBonus
     let totalBonus = user.TotalBonus || 0; // Get the current TotalBonus or default to 0
-    totalBonus += parsedSpinnerBonus; // Increase totalBonus with the new spinnerBonus
+    let spinnerBonusAsNumber = parseFloat(spinnerBonus); // Convert spinnerBonus to a number
+    totalBonus += spinnerBonusAsNumber; // Increase totalBonus with the new spinnerBonus
     if (isNaN(totalBonus)) {
       // Handle case where totalBonus is not a number
       return res
@@ -1434,6 +1462,7 @@ exports.GameHistoryData = async (req, res) => {
       player,
       username,
       gamePrice,
+      WinWallet,
       userId,
       NewWallet,
       TotalBonus,
@@ -1457,6 +1486,7 @@ exports.GameHistoryData = async (req, res) => {
 
       // Update wallet and TotalBonus fields
       userPersonaldata.wallet = NewWallet;
+      userPersonaldata.WinWallet = WinWallet;
       userPersonaldata.TotalBonus = TotalBonus;
 
       // Save the updated user document
@@ -2369,18 +2399,18 @@ exports.PaymentHistorUpdate = async (req, res) => {
   // Destructure the request body
   const { userId, orderId, status } = req.body;
   const responseFixeddata = await axios.get(
-    "https://wild-puce-puppy-sock.cyclic.app/ReferWinDataFixedAmtgetdata"
+    "http://localhost:7000/ReferWinDataFixedAmtgetdata"
   );
   const resFixeddata = responseFixeddata.data;
   const fixedAmountOfWin = resFixeddata[0]?.FixedAmount || 0;
 
   const responseFixeddataofEarn = await axios.get(
-    "https://wild-puce-puppy-sock.cyclic.app/ReferEarnFixedAmtgetData"
+    "http://localhost:7000/ReferEarnFixedAmtgetData"
   );
   const resFixeddataern = responseFixeddataofEarn.data;
   const fixedAmountOfEarn = resFixeddataern[0]?.FixedAmount || 0;
 
-  const responseWin = await axios.get("https://wild-puce-puppy-sock.cyclic.app/ReferWinDataGet");
+  const responseWin = await axios.get("http://localhost:7000/ReferWinDataGet");
   const vresponseWinData = responseWin.data;
   const UserWinData = vresponseWinData[0]?.child || 0;
   const FirstData = vresponseWinData[0]?.firstParent || 0;
@@ -2392,7 +2422,7 @@ exports.PaymentHistorUpdate = async (req, res) => {
   const SecondBonusWinKey = "Second Parent Win Bonus";
   const ThirdBonusWinKey = "Third Parent Win Bonus";
 
-  const responseEarn = await axios.get("https://wild-puce-puppy-sock.cyclic.app/ReferErnDataGet");
+  const responseEarn = await axios.get("http://localhost:7000/ReferErnDataGet");
   const ReferEarndataa = responseEarn.data;
   const UserBonusData = ReferEarndataa[0]?.newuser || 0;
   const firstParentdata = ReferEarndataa[0]?.firstParent || 0;
@@ -2422,6 +2452,14 @@ exports.PaymentHistorUpdate = async (req, res) => {
   if (payment.status != status) {
     payment.status = status;
     await user.save();
+    if (status === 1) {
+      // Add txnAmount to the user's wallet
+      user.wallet += payment.txnAmount;
+      if (payment.percentageVal) {
+        user.TotalBonus += payment.percentageVal || 0;
+      }
+      await user.save();
+    }
 
     // Calculate total txnAmount where status is 1
     const totalTxnAmountdata = user.PaymentHistoryData.reduce(
@@ -2493,11 +2531,11 @@ exports.PaymentHistorUpdate = async (req, res) => {
     // console.log(userforearn);
     if (userforearn.fixedAmntStatus == 1) {
       // Find the upcoming order by orderId
-      console.log("ander aa gya");
+      // console.log("ander aa gya");
       const upcomingOrder = userforearn.PaymentHistoryData.find(
         (order) => order.orderId == orderId
       );
-      console.log(upcomingOrder);
+      // console.log(upcomingOrder);
       // Check if txnAmount of the upcoming order is greater than a fixed amount
       if (upcomingOrder.txnAmount > fixedAmountOfEarn) {
         // Apply bonus to referred users
